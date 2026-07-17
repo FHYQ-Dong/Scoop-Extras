@@ -1,0 +1,46 @@
+{
+    "version": "2.0.1",
+    "description": "Windows App SDK runtime, 2.0 release line (Framework, Main, Singleton and DDLM packages)",
+    "homepage": "https://learn.microsoft.com/windows/apps/windows-app-sdk/downloads",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx"
+    },
+    "notes": "The Windows App Runtime packages are installed system-wide and will NOT be removed by 'scoop uninstall'.",
+    "architecture": {
+        "64bit": {
+            "url": "https://aka.ms/windowsappsdk/2.0/2.0.1/windowsappruntimeinstall-x64.exe",
+            "hash": "8b3164dacac14650a45ce7b1990a8a43ca4427a5a4751abc5611978e75df2810"
+        },
+        "32bit": {
+            "url": "https://aka.ms/windowsappsdk/2.0/2.0.1/windowsappruntimeinstall-x86.exe",
+            "hash": "aaae335b2c363a963b8570ab074ab124e4f96bac56c4f08485020b0c0c423e00"
+        },
+        "arm64": {
+            "url": "https://aka.ms/windowsappsdk/2.0/2.0.1/windowsappruntimeinstall-arm64.exe",
+            "hash": "7eba97f3e5e256abc7c9aa8696ea3b2b4d25ffede1451e18194ca390846718f9"
+        }
+    },
+    "post_install": [
+        "$installer = Get-ChildItem \"$dir\\windowsappruntimeinstall-*.exe\" | Select-Object -First 1",
+        "Invoke-ExternalCommand -FilePath $installer.FullName -ArgumentList '--quiet' | Out-Null",
+        "if (Get-AppxPackage -Name 'Microsoft.WindowsAppRuntime.2.0*') { Write-Host 'Windows App Runtime 2.0 installed.' -ForegroundColor Green } else { Write-Host 'Windows App Runtime installation may have failed. Run the installer manually:' $installer.FullName -ForegroundColor Yellow }"
+    ],
+    "checkver": {
+        "url": "https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads",
+        "regex": "windowsappsdk/2\\.0/([\\d.]+)/windowsappruntimeinstall-x64\\.exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://aka.ms/windowsappsdk/2.0/$version/windowsappruntimeinstall-x64.exe"
+            },
+            "32bit": {
+                "url": "https://aka.ms/windowsappsdk/2.0/$version/windowsappruntimeinstall-x86.exe"
+            },
+            "arm64": {
+                "url": "https://aka.ms/windowsappsdk/2.0/$version/windowsappruntimeinstall-arm64.exe"
+            }
+        }
+    }
+}
